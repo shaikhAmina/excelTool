@@ -1,3 +1,6 @@
 __pycache__/
 *.pyc
 *.pyo
+
+# Streamlit secrets — never commit the real credentials
+.streamlit/secrets.toml

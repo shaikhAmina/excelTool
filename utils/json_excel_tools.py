@@ -1,520 +1,313 @@
-# # import streamlit as st
-# # import pandas as pd
-# # import json
-# # import requests
-# # from io import BytesIO
-
-# # def json_excel_tool_ui():
-# #     st.subheader("📦 JSON ↔ Excel / API → Excel Converter")
-
-# #     tool = st.radio(
-# #         "Select a Conversion Type",
-# #         ["JSON → Excel", "Excel → JSON", "API → Excel"]
-# #     )
-
-# #     # --- JSON → Excel ---
-# #     if tool == "JSON → Excel":
-# #         uploaded_file = st.file_uploader("Upload JSON File", type=["json"])
-# #         json_text = st.text_area("Or paste JSON data manually", height=200, placeholder='[{"id":1,"name":"John"}]')
-
-# #         if uploaded_file or json_text.strip():
-# #             try:
-# #                 if uploaded_file:
-# #                     data = json.load(uploaded_file)
-# #                 else:
-# #                     data = json.loads(json_text)
-
-# #                 if isinstance(data, dict):
-# #                     data = [data]
-
-# #                 df = pd.DataFrame(data)
-# #                 st.write("✅ Preview:")
-# #                 st.dataframe(df.head())
-
-# #                 output = BytesIO()
-# #                 with pd.ExcelWriter(output, engine="openpyxl") as writer:
-# #                     df.to_excel(writer, index=False, sheet_name="Data")
-
-# #                 st.download_button(
-# #                     "⬇️ Download Excel File",
-# #                     output.getvalue(),
-# #                     file_name="converted_data.xlsx",
-# #                     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-# #                 )
-# #                 st.success("✅ JSON converted successfully!")
-# #             except Exception as e:
-# #                 st.error(f"❌ Error parsing JSON: {e}")
-
-# #     # --- Excel → JSON ---
-# #     elif tool == "Excel → JSON":
-# #         file = st.file_uploader("Upload Excel File", type=["xlsx"])
-# #         if file:
-# #             try:
-# #                 df = pd.read_excel(file)
-# #                 st.write("✅ Excel Preview:")
-# #                 st.dataframe(df.head())
-
-# #                 json_data = df.to_dict(orient="records")
-# #                 json_str = json.dumps(json_data, indent=2, ensure_ascii=False)
-
-# #                 st.download_button(
-# #                     "⬇️ Download JSON File",
-# #                     json_str,
-# #                     file_name="converted_data.json",
-# #                     mime="application/json"
-# #                 )
-# #                 st.code(json_str[:1000], language="json")
-# #                 st.success("✅ Excel converted to JSON successfully!")
-# #             except Exception as e:
-# #                 st.error(f"❌ Failed to read Excel file: {e}")
-
-# #     # --- API → Excel ---
-# #     elif tool == "API → Excel":
-# #         api_url = st.text_input("Enter API Endpoint (GET request only):", placeholder="https://api.example.com/data")
-# #         auth_header = st.text_area("Optional Authorization Header", placeholder="Bearer your_token_here")
-
-# #         if st.button("Fetch API Data"):
-# #             try:
-# #                 headers = {}
-# #                 if auth_header.strip():
-# #                     headers["Authorization"] = auth_header.strip()
-
-# #                 response = requests.get(api_url, headers=headers)
-# #                 response.raise_for_status()
-# #                 data = response.json()
-
-# #                 if isinstance(data, dict):
-# #                     # Flatten top-level list if exists
-# #                     if any(isinstance(v, list) for v in data.values()):
-# #                         data = next((v for v in data.values() if isinstance(v, list)), [])
-# #                     else:
-# #                         data = [data]
-
-# #                 df = pd.DataFrame(data)
-# #                 st.write("✅ API Data Preview:")
-# #                 st.dataframe(df.head())
-
-# #                 output = BytesIO()
-# #                 with pd.ExcelWriter(output, engine="openpyxl") as writer:
-# #                     df.to_excel(writer, index=False, sheet_name="API_Data")
-
-# #                 st.download_button(
-# #                     "⬇️ Download Excel File",
-# #                     output.getvalue(),
-# #                     file_name="api_data.xlsx",
-# #                     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-# #                 )
-# #                 st.success("✅ API data converted successfully!")
-# #             except Exception as e:
-# #                 st.error(f"❌ Error fetching API data: {e}")
-# # # streamlit run app.py
-# import streamlit as st
-# import pandas as pd
-# import json
-# import requests
-# from io import BytesIO
-
-# def json_excel_tool_ui():
-#     st.subheader("📦 JSON ↔ Excel / API → Excel / Text → Excel Converter")
-
-#     tool = st.radio(
-#         "Select a Conversion Type",
-#         ["JSON → Excel", "Excel → JSON", "API → Excel", "Text → Excel"]
-#     )
-
-#     # --- JSON → Excel ---
-#     if tool == "JSON → Excel":
-#         uploaded_file = st.file_uploader("Upload JSON File", type=["json"])
-#         json_text = st.text_area("Or paste JSON data manually", height=200, placeholder='[{"id":1,"name":"John"}]')
-
-#         if uploaded_file or json_text.strip():
-#             try:
-#                 if uploaded_file:
-#                     data = json.load(uploaded_file)
-#                 else:
-#                     data = json.loads(json_text)
-
-#                 if isinstance(data, dict):
-#                     data = [data]
-
-#                 df = pd.DataFrame(data)
-#                 st.write("✅ Preview:")
-#                 st.dataframe(df.head())
-
-#                 output = BytesIO()
-#                 with pd.ExcelWriter(output, engine="openpyxl") as writer:
-#                     df.to_excel(writer, index=False, sheet_name="Data")
-
-#                 st.download_button(
-#                     "⬇️ Download Excel File",
-#                     output.getvalue(),
-#                     file_name="converted_data.xlsx",
-#                     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-#                 )
-#                 st.success("✅ JSON converted successfully!")
-#             except Exception as e:
-#                 st.error(f"❌ Error parsing JSON: {e}")
-
-#     # --- Excel → JSON ---
-#     elif tool == "Excel → JSON":
-#         file = st.file_uploader("Upload Excel File", type=["xlsx"])
-#         if file:
-#             try:
-#                 df = pd.read_excel(file)
-#                 st.write("✅ Excel Preview:")
-#                 st.dataframe(df.head())
-
-#                 json_data = df.to_dict(orient="records")
-#                 json_str = json.dumps(json_data, indent=2, ensure_ascii=False)
-
-#                 st.download_button(
-#                     "⬇️ Download JSON File",
-#                     json_str,
-#                     file_name="converted_data.json",
-#                     mime="application/json"
-#                 )
-#                 st.code(json_str[:1000], language="json")
-#                 st.success("✅ Excel converted to JSON successfully!")
-#             except Exception as e:
-#                 st.error(f"❌ Failed to read Excel file: {e}")
-
-#     # --- API → Excel ---
-#     elif tool == "API → Excel":
-#         api_url = st.text_input("Enter API Endpoint (GET request only):", placeholder="https://api.example.com/data")
-#         auth_header = st.text_area("Optional Authorization Header", placeholder="Bearer your_token_here")
-
-#         if st.button("Fetch API Data"):
-#             try:
-#                 headers = {}
-#                 if auth_header.strip():
-#                     headers["Authorization"] = auth_header.strip()
-
-#                 response = requests.get(api_url, headers=headers)
-#                 response.raise_for_status()
-#                 data = response.json()
-
-#                 if isinstance(data, dict):
-#                     # Flatten top-level list if exists
-#                     if any(isinstance(v, list) for v in data.values()):
-#                         data = next((v for v in data.values() if isinstance(v, list)), [])
-#                     else:
-#                         data = [data]
-
-#                 df = pd.DataFrame(data)
-#                 st.write("✅ API Data Preview:")
-#                 st.dataframe(df.head())
-
-#                 output = BytesIO()
-#                 with pd.ExcelWriter(output, engine="openpyxl") as writer:
-#                     df.to_excel(writer, index=False, sheet_name="API_Data")
-
-#                 st.download_button(
-#                     "⬇️ Download Excel File",
-#                     output.getvalue(),
-#                     file_name="api_data.xlsx",
-#                     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-#                 )
-#                 st.success("✅ API data converted successfully!")
-#             except Exception as e:
-#                 st.error(f"❌ Error fetching API data: {e}")
-
-#     # --- NEW FEATURE: Text → Excel ---
-# # --- TEXT → EXCEL ---
-#     elif tool == "Text → Excel":
-#         txt_file = st.file_uploader("Upload .txt file containing JSON", type=["txt"])
-
-#         if txt_file:
-#             try:
-#                 # Read raw text
-#                 raw_text = txt_file.read().decode("utf-8").strip()
-
-#                 # Try to parse as JSON
-#                 data = json.loads(raw_text)
-
-#                 # Extract list from {"data": [...]} or direct list
-#                 if isinstance(data, dict) and "data" in data:
-#                     data = data["data"]
-#                 elif isinstance(data, dict):
-#                     data = [data]
-
-#                 # Convert to DataFrame
-#                 df = pd.DataFrame(data)
-
-#                 st.write("✅ Preview:")
-#                 st.dataframe(df.head())
-
-#                 # Export to Excel
-#                 output = BytesIO()
-#                 with pd.ExcelWriter(output, engine="openpyxl") as writer:
-#                     df.to_excel(writer, index=False, sheet_name="TXT_Data")
-
-#                 st.download_button(
-#                     "⬇️ Download Excel File",
-#                     output.getvalue(),
-#                     file_name="txt_converted.xlsx",
-#                     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-#                 )
-
-#                 st.success("✅ Text file converted successfully!")
-
-#             except Exception as e:
-#                 st.error(f"❌ Failed to parse text as JSON: {e}")
 import streamlit as st
 import pandas as pd
 import ujson as json
 import requests
-import os
 from io import BytesIO
 
+from utils.helpers import (
+    show_file_info,
+    show_data_preview,
+    show_before_after,
+    result_banner,
+    friendly_error,
+    df_to_excel_bytes,
+    privacy_notice,
+    feedback_widget,
+)
+
+
+# ─────────────────────────────────────────────────────
+# SHARED HELPER: parse raw data → DataFrame
+# ─────────────────────────────────────────────────────
+def _data_to_df(data) -> pd.DataFrame:
+    """Normalise a JSON value (list / dict / nested) into a flat DataFrame."""
+    if isinstance(data, dict):
+        # Try to unwrap {"data": [...]} or {"results": [...]} etc.
+        list_val = next((v for v in data.values() if isinstance(v, list)), None)
+        if list_val is not None:
+            data = list_val
+        else:
+            data = [data]
+    if not isinstance(data, list):
+        raise ValueError("Cannot flatten this JSON structure into a table.")
+    return pd.json_normalize(data)
+
+
+# ─────────────────────────────────────────────────────
+# MAIN UI DISPATCHER
+# ─────────────────────────────────────────────────────
 def json_excel_tool_ui():
-    st.subheader("📦 JSON ↔ Excel / API → Excel / Text → Excel Converter")
+    st.markdown("### 🔄 JSON ↔ Excel Converter")
+    st.caption(
+        "Convert JSON files to Excel, export Excel data as JSON, "
+        "pull live API data into a spreadsheet, or convert a text file containing JSON."
+    )
+    privacy_notice()
+    st.markdown("---")
 
     tool = st.radio(
-        "Select a Conversion Type",
-        ["JSON → Excel", "Excel → JSON", "API → Excel", "Text → Excel"]
+        "What would you like to do?",
+        ["JSON → Excel", "Excel → JSON", "API → Excel", "Text File → Excel"],
+        horizontal=True,
+        key="je_mode",
     )
 
-    # --- JSON → Excel ---
     if tool == "JSON → Excel":
-        uploaded_file = st.file_uploader("Upload JSON File", type=["json"])
-        json_text = st.text_area("Or paste JSON data manually", height=200, placeholder='[{"id":1,"name":"John"}]')
-
-        if uploaded_file or json_text.strip():
-            try:
-                if uploaded_file:
-                    data = json.load(uploaded_file)
-                else:
-                    data = json.loads(json_text)
-
-                if isinstance(data, dict):
-                    data = [data]
-
-                df = pd.DataFrame(data)
-                st.write("✅ Preview:")
-                st.dataframe(df.head())
-
-                output = BytesIO()
-                with pd.ExcelWriter(output, engine="openpyxl") as writer:
-                    df.to_excel(writer, index=False, sheet_name="Data")
-                output.seek(0)
-
-                st.download_button(
-                    "⬇️ Download Excel File",
-                    output.getvalue(),
-                    file_name="converted_data.xlsx",
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                )
-                st.success("✅ JSON converted successfully!")
-            except Exception as e:
-                st.error(f"❌ Error parsing JSON: {e}")
-
-    # --- Excel → JSON ---
+        _json_to_excel_ui()
     elif tool == "Excel → JSON":
-        file = st.file_uploader("Upload Excel File", type=["xlsx"])
-        if file:
-            try:
-                df = pd.read_excel(file)
-                st.write("✅ Excel Preview:")
-                st.dataframe(df.head())
-
-                json_data = df.to_dict(orient="records")
-                json_str = json.dumps(json_data, indent=2, ensure_ascii=False)
-
-                st.download_button(
-                    "⬇️ Download JSON File",
-                    json_str,
-                    file_name="converted_data.json",
-                    mime="application/json"
-                )
-                st.code(json_str[:1000], language="json")
-                st.success("✅ Excel converted to JSON successfully!")
-            except Exception as e:
-                st.error(f"❌ Failed to read Excel file: {e}")
-
-    # --- API → Excel ---
-    # --- API → Excel ---
+        _excel_to_json_ui()
     elif tool == "API → Excel":
-        api_url = st.text_input("Enter API Endpoint (GET request only):", value="http://localhost:4002/v1/studentmaster/get-studentmaster")
-        # Provide a place to paste token, and an option to use server-stored token
-        use_server_token = st.checkbox("Use server-stored token (st.secrets or env)", value=False)
-        token_input = st.text_area("Paste Bearer token here (if not using server-stored)", height=120, placeholder="eyJhbGciOiJSUzI1NiIsInR5cCI...")
+        _api_to_excel_ui()
+    else:
+        _text_to_excel_ui()
 
-        # Optional: read a token from st.secrets or an env variable if checkbox checked
-        server_token = None
-        if use_server_token:
-            # prefer st.secrets if available, fallback to env var
-            server_token = st.secrets.get("API_BEARER_TOKEN") if hasattr(st, "secrets") else None
-            if not server_token:
-                import os
-                server_token = os.environ.get("API_BEARER_TOKEN")
-            if not server_token:
-                st.warning("No server token found in st.secrets or env var API_BEARER_TOKEN. Paste token manually or set secrets/env var.")
-        
-        # Choose final token to use
-        token = server_token if use_server_token else token_input.strip()
 
-        # Additional request options
-        verify_ssl = st.checkbox("Verify SSL (set false for local self-signed/localhost)", value=True)
-        timeout_seconds = st.number_input("Request timeout (seconds)", min_value=1, max_value=60, value=15)
+# ─────────────────────────────────────────────────────
+# JSON → EXCEL
+# ─────────────────────────────────────────────────────
+def _json_to_excel_ui():
+    st.markdown("#### Step 1 — Upload or Paste JSON")
 
-        if st.button("Fetch API Data"):
-            if not api_url.strip():
-                st.error("❌ Please enter API URL.")
-            elif not token:
-                st.error("❌ Please provide a Bearer token (paste it or enable server-stored token).")
-            else:
-                try:
-                    headers = {
-                        "Authorization": f"Bearer {token}",
-                        "Accept": "application/json",
-                    }
+    uploaded = st.file_uploader("Upload a JSON file", type=["json"], key="je_json_up")
+    json_text = st.text_area(
+        "Or paste JSON directly",
+        height=160,
+        placeholder='[{"id": 1, "name": "Alice"}, {"id": 2, "name": "Bob"}]',
+        key="je_json_text",
+    )
 
-                    # Make the GET request
-                    response = requests.get(api_url.strip(), headers=headers, timeout=int(timeout_seconds), verify=bool(verify_ssl))
-                    # Raise for HTTP errors (4xx/5xx)
-                    response.raise_for_status()
+    if not uploaded and not json_text.strip():
+        st.info("Upload a .json file or paste JSON above to get started.")
+        feedback_widget()
+        return
 
-                    # Try parse JSON
-                    data = response.json()
+    st.markdown("#### Step 2 — Configure")
+    sheet_name = st.text_input("Sheet name in output Excel", value="Data", key="je_sheet")
 
-                    # Normalize possible shapes:
-                    # - If dict with a list under 'data' -> use that
-                    # - If dict with any list value -> pick the first list value
-                    # - If dict (single object) -> wrap into list
-                    # - If list -> use directly
-                    def normalize_json(resp):
-                        if isinstance(resp, list):
-                            return resp
-                        if isinstance(resp, dict):
-                            if "data" in resp and isinstance(resp["data"], list):
-                                return resp["data"]
-                            # find first list value
-                            for v in resp.values():
-                                if isinstance(v, list):
-                                    return v
-                            return [resp]
-                        raise ValueError("Response JSON is not a list or object.")
+    st.markdown("#### Step 3 — Preview")
+    try:
+        if uploaded:
+            raw = uploaded.read()
+            data = json.loads(raw)
+        else:
+            data = json.loads(json_text)
 
-                    data_list = normalize_json(data)
+        df = _data_to_df(data)
+    except Exception as e:
+        friendly_error(e)
+        return
 
-                    # convert to DataFrame (if empty, show message)
-                    if not data_list:
-                        st.warning("✅ API returned an empty list.")
-                        st.json(data)  # show raw
-                    else:
-                        df = pd.DataFrame(data_list)
-                        st.write("✅ API Data Preview:")
-                        st.dataframe(df.head())
+    show_data_preview(df, label=f"{len(df):,} rows, {len(df.columns)} columns")
 
-                        output = BytesIO()
-                        with pd.ExcelWriter(output, engine="openpyxl") as writer:
-                            df.to_excel(writer, index=False, sheet_name="API_Data")
-                        output.seek(0)
+    st.markdown("#### Step 4 — Process")
+    if st.button("🔄 Convert to Excel", type="primary", key="je_btn_je"):
+        try:
+            result_banner(
+                "Conversion complete",
+                {
+                    "Rows": f"{len(df):,}",
+                    "Columns": len(df.columns),
+                    "Sheet": sheet_name,
+                },
+            )
+            st.download_button(
+                "⬇️ Download Excel",
+                df_to_excel_bytes(df, sheet_name),
+                file_name="converted_data.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            )
+        except Exception as e:
+            friendly_error(e)
 
-                        # filename suggestion from endpoint
-                        suggested_name = api_url.strip().rstrip("/").split("/")[-1] or "api_data"
-                        suggested_name = suggested_name + ".xlsx"
+    feedback_widget()
 
-                        st.download_button(
-                            "⬇️ Download Excel File",
-                            output.getvalue(),
-                            file_name=suggested_name,
-                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                        )
-                        st.success("✅ API data converted successfully!")
-                except requests.HTTPError as he:
-                    st.error(f"❌ HTTP error: {he} — Response: {getattr(he, 'response').text if getattr(he,'response',None) else ''}")
-                except requests.RequestException as re:
-                    st.error(f"❌ Request failed: {re}")
-                except ValueError as ve:
-                    st.error(f"❌ JSON parsing/normalization error: {ve}")
-                except Exception as e:
-                    st.error(f"❌ Unexpected error: {e}")
 
-    # --- TEXT → EXCEL ---
-    elif tool == "Text → Excel":
-        st.write("Choose input method:")
-        choice = st.radio("Input source", ["Upload .txt file", "Server file path (server-side)"])
+# ─────────────────────────────────────────────────────
+# EXCEL → JSON
+# ─────────────────────────────────────────────────────
+def _excel_to_json_ui():
+    st.markdown("#### Step 1 — Upload")
+    file = st.file_uploader("Upload an Excel file (.xlsx)", type=["xlsx"], key="je_xl_up")
+    if not file:
+        st.info("Upload an .xlsx file to get started.")
+        feedback_widget()
+        return
 
-        def parse_json_from_text(raw_text):
-            # Try parsing JSON; handle dict with "data" key or direct list/dict
-            try:
-                parsed = json.loads(raw_text)
-            except json.JSONDecodeError as e:
-                raise ValueError(f"Invalid JSON content: {e}")
+    try:
+        df = pd.read_excel(file)
+    except Exception as e:
+        friendly_error(e)
+        return
 
-            # If top-level dict contains a list under "data", use that
-            if isinstance(parsed, dict) and "data" in parsed and isinstance(parsed["data"], list):
-                return parsed["data"]
-            # If parsed is a dict (single object), wrap it to list
-            if isinstance(parsed, dict):
-                return [parsed]
-            # If parsed is a list, return directly
-            if isinstance(parsed, list):
-                return parsed
+    show_file_info(file, df)
 
-            raise ValueError("JSON root must be an object or an array (or contain a 'data' list).")
+    st.markdown("#### Step 2 — Configure")
+    orient = st.radio(
+        "JSON structure",
+        ["records  →  [{col: val, …}]", "columns  →  {col: [val, …]}"],
+        horizontal=True,
+        key="je_orient",
+    )
+    orient_val = "records" if "records" in orient else "columns"
+    indent = st.slider("Indentation (spaces)", 0, 4, 2, key="je_indent")
+    ensure_ascii = st.checkbox("Escape non-ASCII characters", value=False, key="je_ascii")
 
-        if choice == "Upload .txt file":
-            txt_file = st.file_uploader("Upload .txt file containing JSON", type=["txt", "json"])
-            if txt_file:
-                try:
-                    raw_text = txt_file.read().decode("utf-8").strip()
-                    data_list = parse_json_from_text(raw_text)
+    st.markdown("#### Step 3 — Preview")
+    show_data_preview(df)
 
-                    df = pd.DataFrame(data_list)
-                    st.write("✅ Preview:")
-                    st.dataframe(df.head())
+    st.markdown("#### Step 4 — Process")
+    if st.button("🔄 Convert to JSON", type="primary", key="je_btn_ej"):
+        try:
+            json_data = df.to_dict(orient=orient_val)
+            json_str = json.dumps(json_data, indent=indent if indent > 0 else None)
 
-                    # Prepare Excel in-memory
-                    output = BytesIO()
-                    with pd.ExcelWriter(output, engine="openpyxl") as writer:
-                        df.to_excel(writer, index=False, sheet_name="TXT_Data")
-                    output.seek(0)
+            result_banner(
+                "Conversion complete",
+                {
+                    "Source rows": f"{len(df):,}",
+                    "Source columns": len(df.columns),
+                    "Output size": f"{len(json_str):,} chars",
+                },
+            )
 
-                    st.download_button(
-                        "⬇️ Download Excel File",
-                        output.getvalue(),
-                        file_name="txt_converted.xlsx",
-                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                    )
-                    st.success("✅ Text file converted successfully!")
-                except Exception as e:
-                    st.error(f"❌ Failed to parse text as JSON: {e}")
+            # Show a capped preview
+            preview_chars = 1500
+            with st.expander("👀 JSON preview", expanded=True):
+                st.code(json_str[:preview_chars] + ("…" if len(json_str) > preview_chars else ""), language="json")
 
-        else:  # Server file path
-            st.write("Enter server-side file path (a path accessible to the Streamlit server).")
-            server_path = st.text_input("Server file path (e.g., C:\\Users\\Dell\\Downloads\\order.txt or /tmp/order.txt)")
+            st.download_button(
+                "⬇️ Download JSON",
+                json_str,
+                file_name=f"{file.name.replace('.xlsx', '')}.json",
+                mime="application/json",
+            )
+        except Exception as e:
+            friendly_error(e)
 
-            if st.button("Convert server file to Excel"):
-                if not server_path.strip():
-                    st.error("❌ Please provide a valid server file path.")
-                else:
-                    if not os.path.exists(server_path):
-                        st.error(f"❌ File not found on server: {server_path}")
-                    else:
-                        try:
-                            with open(server_path, "r", encoding="utf-8") as f:
-                                raw_text = f.read().strip()
+    feedback_widget()
 
-                            data_list = parse_json_from_text(raw_text)
 
-                            df = pd.DataFrame(data_list)
-                            st.write("✅ Preview:")
-                            st.dataframe(df.head())
+# ─────────────────────────────────────────────────────
+# API → EXCEL
+# ─────────────────────────────────────────────────────
+def _api_to_excel_ui():
+    st.markdown("#### Step 1 — Configure API Request")
 
-                            # In-memory Excel
-                            output = BytesIO()
-                            with pd.ExcelWriter(output, engine="openpyxl") as writer:
-                                df.to_excel(writer, index=False, sheet_name="TXT_Data")
-                            output.seek(0)
+    api_url = st.text_input(
+        "API endpoint URL (GET only)",
+        placeholder="https://api.example.com/v1/users",
+        key="je_api_url",
+    )
+    auth_header = st.text_input(
+        "Authorization header value (optional)",
+        placeholder="Bearer eyJhbGci…",
+        type="password",
+        key="je_api_auth",
+    )
+    extra_headers_raw = st.text_area(
+        "Additional headers — one per line as  Key: Value  (optional)",
+        placeholder="X-Api-Version: 2\nAccept: application/json",
+        height=80,
+        key="je_api_headers",
+    )
+    timeout = st.slider("Request timeout (seconds)", 5, 60, 15, key="je_api_timeout")
 
-                            st.download_button(
-                                "⬇️ Download Excel File",
-                                output.getvalue(),
-                                file_name=os.path.basename(server_path).rsplit(".", 1)[0] + ".xlsx",
-                                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                            )
-                            st.success(f"✅ Converted server file: {server_path}")
-                        except Exception as e:
-                            st.error(f"❌ Error reading/parsing server file: {e}")
+    if not api_url.strip():
+        st.info("Enter an API URL above.")
+        feedback_widget()
+        return
+
+    st.markdown("#### Step 2 — Process")
+    if st.button("🌐 Fetch & Convert", type="primary", key="je_btn_api"):
+        try:
+            headers = {"Accept": "application/json"}
+            if auth_header.strip():
+                headers["Authorization"] = auth_header.strip()
+            for line in extra_headers_raw.strip().splitlines():
+                if ":" in line:
+                    k, v = line.split(":", 1)
+                    headers[k.strip()] = v.strip()
+
+            with st.spinner("Fetching data…"):
+                resp = requests.get(api_url.strip(), headers=headers, timeout=timeout)
+                resp.raise_for_status()
+                data = resp.json()
+
+            df = _data_to_df(data)
+
+            result_banner(
+                "API fetch complete",
+                {
+                    "Rows fetched": f"{len(df):,}",
+                    "Columns": len(df.columns),
+                    "Status": resp.status_code,
+                },
+            )
+            show_data_preview(df, label="API data preview")
+
+            st.download_button(
+                "⬇️ Download Excel",
+                df_to_excel_bytes(df, "API_Data"),
+                file_name="api_data.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            )
+        except requests.exceptions.ConnectionError:
+            st.error("⚠️ Could not connect to that URL. Check your internet connection and the address.")
+        except requests.exceptions.HTTPError as e:
+            st.error(f"⚠️ The API returned an error: {e.response.status_code} {e.response.reason}. Check your URL and auth token.")
+        except requests.exceptions.Timeout:
+            st.error(f"⚠️ The request timed out after {timeout}s. Try increasing the timeout or check if the API is reachable.")
+        except Exception as e:
+            friendly_error(e)
+
+    feedback_widget()
+
+
+# ─────────────────────────────────────────────────────
+# TEXT FILE → EXCEL
+# ─────────────────────────────────────────────────────
+def _text_to_excel_ui():
+    st.markdown("#### Step 1 — Upload")
+    txt_file = st.file_uploader(
+        "Upload a .txt or .json file containing JSON data",
+        type=["txt", "json"],
+        key="je_txt_up",
+    )
+    if not txt_file:
+        st.info("Upload a text file that contains JSON array or object data.")
+        feedback_widget()
+        return
+
+    st.markdown("#### Step 2 — Configure")
+    encoding = st.selectbox("File encoding", ["utf-8", "utf-8-sig", "latin-1", "cp1252"], key="je_enc")
+    sheet_name = st.text_input("Sheet name", value="Data", key="je_txt_sheet")
+
+    st.markdown("#### Step 3 — Preview & Process")
+    if st.button("🔄 Convert to Excel", type="primary", key="je_btn_txt"):
+        try:
+            raw = txt_file.read().decode(encoding).strip()
+            data = json.loads(raw)
+            df = _data_to_df(data)
+
+            result_banner(
+                "Conversion complete",
+                {
+                    "Rows": f"{len(df):,}",
+                    "Columns": len(df.columns),
+                    "Source file": txt_file.name,
+                },
+            )
+            show_data_preview(df)
+
+            st.download_button(
+                "⬇️ Download Excel",
+                df_to_excel_bytes(df, sheet_name),
+                file_name=f"{txt_file.name.rsplit('.', 1)[0]}.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            )
+        except UnicodeDecodeError:
+            st.error(f"⚠️ Could not read the file with {encoding} encoding. Try a different encoding option above.")
+        except Exception as e:
+            friendly_error(e)
+
+    feedback_widget()
