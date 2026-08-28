@@ -89,6 +89,22 @@ BADGE_CLASS = {
 # ─────────────────────────────────────────────────────
 st.markdown(
     """
+    <!-- Google Search Console verification -->
+    <meta name="google-site-verification" content="u4O-8Kcd_N9jIufg-9dli6KzYCl9ykB80BgsLpTENW8" />
+
+    <!-- SEO meta tags -->
+    <meta name="description" content="Free online Excel tools — merge, split, VLOOKUP, find duplicates, convert JSON to Excel, format numbers and strings. No sign-up required." />
+    <meta name="keywords" content="excel merge tool, split excel, vlookup online, find duplicates excel, json to excel, excel to json, free excel tools, data cleaning" />
+    <meta property="og:title" content="Excel Toolbox — Free Excel & Data Tools" />
+    <meta property="og:description" content="Merge, split, VLOOKUP, find duplicates, convert JSON to Excel and more. Free, no sign-up, files never leave your browser." />
+    <meta property="og:url" content="https://exceltoolbox.streamlit.app/" />
+    <meta property="og:type" content="website" />
+    """,
+    unsafe_allow_html=True,
+)
+
+st.markdown(
+    """
     <style>
     html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
     #MainMenu, footer, header { visibility: hidden; }
