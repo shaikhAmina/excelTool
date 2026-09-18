@@ -13,6 +13,7 @@ from utils.file_utils import merge_excel_ui, split_excel_ui, find_duplicates_ui
 from utils.vlookup_tool import vlookup_tool_ui
 from utils.converters import convert_to_number_ui, comma_string_formatter_ui
 from utils.json_excel_tools import json_excel_tool_ui
+from utils.data_workflow import data_workflow_ui
 
 # ─────────────────────────────────────────────────────
 # TOOL REGISTRY
@@ -41,6 +42,14 @@ TOOLS = [
         "category": "Excel Tools",
         "desc": "Match and pull columns across two spreadsheets by a shared key.",
         "fn": vlookup_tool_ui,
+    },
+    {
+        "id": "workflow",
+        "label": "Data Workflow",
+        "icon": "⚙️",
+        "category": "Excel Tools",
+        "desc": "Chain lookups, column concatenation, and number conversion in the order you choose.",
+        "fn": data_workflow_ui,
     },
     {
         "id": "duplicates",
