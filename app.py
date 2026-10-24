@@ -14,6 +14,7 @@ from utils.vlookup_tool import vlookup_tool_ui
 from utils.converters import convert_to_number_ui, comma_string_formatter_ui
 from utils.json_excel_tools import json_excel_tool_ui
 from utils.data_workflow import data_workflow_ui
+from utils.json_formatter import json_formatter_ui
 
 # ─────────────────────────────────────────────────────
 # TOOL REGISTRY
@@ -82,6 +83,14 @@ TOOLS = [
         "category": "Conversion Tools",
         "desc": "Format a list of values as comma-separated, quoted, or SQL IN-clause strings.",
         "fn": comma_string_formatter_ui,
+    },
+    {
+        "id": "json_fmt",
+        "label": "JSON Formatter",
+        "icon": "🎨",
+        "category": "Conversion Tools",
+        "desc": "Paste or upload any JSON — flat, nested, deeply nested — and instantly format or minify it with a full Postman-style preview.",
+        "fn": json_formatter_ui,
     },
 ]
 
