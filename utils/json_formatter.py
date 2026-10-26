@@ -104,7 +104,7 @@ def _build(node, comma: str = "") -> str:
             f'</details>'
         )
 
-    return f'<span class="line">{_val(node)}<span class="punct">{comma}</span></span>'
+    return f'{_val(node)}<span class="punct">{comma}</span>'
 
 
 _CSS = """
@@ -119,14 +119,14 @@ body {
 }
 
 /* ── collapsible block ── */
-details { display: block; }
+details { display: inline-block; vertical-align: top; }
 details[open] > summary .ellipsis { display: none; }
 details:not([open]) > summary .hint { display: none; }
 details:not([open]) > .block { display: none; }
 details:not([open]) > div.line { display: none; }
 
 summary {
-  display: block;          /* remove default marker */
+  display: inline-block;   /* keep nested opening braces beside their keys */
   cursor: pointer;
   list-style: none;
   outline: none;
